@@ -16,9 +16,13 @@ Developer: Ismael Antadillas
 
 
 Usage: cpuplot -i [seconds] -w [small medium large xlarge]
-where:
+
+Where:
+
 -i interval time in seconds between CPU readings.
+
 -w width of the output, "small", "medium", "large", "xlarge"
+
 
 As described in the man page for the "ps" command:
 "The CPU utilization of the process is a decaying average over up to a
