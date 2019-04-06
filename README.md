@@ -6,11 +6,11 @@
 
 
 ## Synopsis:
-Displays bar graphs to the terminal depicting the Total CPU Usage Percentage and the Total 1 Minute Load Average Percentage.  It also shows name of the process with the highest CPU utilization.
-
-If the system has been in sleep mode, it displays the "ASLEEP" text.
+Displays bar graphs to the terminal depicting the Total CPU Usage Percentage and the Total 1 Minute Load Average Percentage.  It shows the name of the process with the highest CPU utilization, and allows to view back in time the CPU usage.
 
 Default wait interval between system readings is 5secs. But a different one can be passed in the command line with the **-i** argument.
+
+The script detects when the system is in SLEEP mode and shows the "ASLEEP" text.
 
 **Build for MacOS bash.  A linux version coming soon.**
 
