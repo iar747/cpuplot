@@ -5,7 +5,7 @@
 ![](cpuplot%20xlarge%20screenshot.png)
 
 
-# Synopsis
+## Synopsis
 Displays bar graphs to the terminal depicting the Total CPU Usage Percentage and the Total 1 Minute Load Average Percentage.  It also shows name of the process with the highest CPU utilization.
 
 If the system has been in sleep mode, it displays the "ASLEEP" text.
