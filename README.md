@@ -16,13 +16,13 @@ Developer: Ismael Antadillas
 
 
 
-**Usage: cpuplot -i [seconds] -w [small medium large xlarge]
+**Usage: cpuplot -i [seconds] -w [small medium large xlarge]**
 
 Where:
 
--i interval time in seconds between CPU readings.
+**-i interval time in seconds between CPU readings.**
 
--w width of the output, "small", "medium", "large", "xlarge"**
+**-w width of the output, "small", "medium", "large", "xlarge"**
 
 
 As described in the man page for the "ps" command:
