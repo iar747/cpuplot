@@ -3,8 +3,10 @@
 # Command Line profiler of CPU usage.
 
 Displays bar graphs to the terminal depicting the Total CPU Usage Percentage
-and the Total 1 Minute Load Average Percentage.  It also shows the process
-with the highest CPU utilization.
+and the Total 1 Minute Load Average Percentage.  It also shows name of the
+process with the highest CPU utilization.
+
+If the system has been in sleep mode, it displays the "ASLEEP" text.
 
 Default sleep interval between readings is 5secs. But a different one can be
 passed as an argument in the command line.
@@ -35,3 +37,4 @@ When this happens, the bar plot will be truncated to 100%.
 
 The 1 minute Load Average Percentage, is calculated dividing the 1 minute
 Load Average by the number of Cores in the system.
+
