@@ -8,7 +8,7 @@ Displays bar graphs to the terminal depicting the Total CPU Usage Percentage and
 
 If the system has been in sleep mode, it displays the "ASLEEP" text.
 
-Default wait interval between system readings is 5secs. But a different one can be passed in the command line with the "-i" argument.
+Default wait interval between system readings is 5secs. But a different one can be passed in the command line with the **-i** argument.
 
 Build for MacOS bash.  A linux version coming soon.
 
@@ -16,13 +16,13 @@ Developer: Ismael Antadillas
 
 
 
-Usage: cpuplot -i [seconds] -w [small medium large xlarge]
+**Usage: cpuplot -i [seconds] -w [small medium large xlarge]
 
 Where:
 
 -i interval time in seconds between CPU readings.
 
--w width of the output, "small", "medium", "large", "xlarge"
+-w width of the output, "small", "medium", "large", "xlarge"**
 
 
 As described in the man page for the "ps" command:
