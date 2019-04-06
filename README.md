@@ -50,5 +50,6 @@ To have both stderr and output displayed on the console and in a file use this:
 `cpuplot 2>&1 | tee outputFilename`
 
 ## Other screenshots:
-Using `cpuplot` alone will use the default arguments of `-i 5` for 5 seconds intervals and `-w medium` to fit in a standard 80 column console.
+Using `cpuplot` alone will use the default arguments of `-i 5` for 5 seconds intervals, and `-w medium` to fit in a standard 80 column console.
+
 ![](cpuplot_default.jpeg)
