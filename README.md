@@ -5,7 +5,7 @@
 ![](cpuplot%20xlarge%20screenshot.png)
 
 
-## Synopsis
+## Synopsis:
 Displays bar graphs to the terminal depicting the Total CPU Usage Percentage and the Total 1 Minute Load Average Percentage.  It also shows name of the process with the highest CPU utilization.
 
 If the system has been in sleep mode, it displays the "ASLEEP" text.
@@ -44,3 +44,11 @@ When this happens, the bar plot will be truncated to 100%.
 
 The 1 minute Load Average Percentage, is calculated dividing the 1 minute
 Load Average by the number of Cores in the system.
+
+## Writing output to a file:
+To have both stderr and output displayed on the console and in a file use this:
+`cpuplot 2>&1 | tee outputFilename`
+
+## Other screenshots:
+Using `cpuplot` alone will use the default arguments of `-i 5` for 5 seconds intervals and `-w medium` to fit in a standard 80 column console.
+![](cpuplot_default.jpeg)
