@@ -46,7 +46,7 @@ The 1 minute Load Average Percentage, is calculated dividing the 1 minute
 Load Average by the number of Cores in the system.
 
 ## Writing output to a file:
-To have both stderr and output displayed on the console and in a file use this:
+The following command will have the output of cpuplot displayed to the console and also written to a file: 
 
 `cpuplot 2>&1 | tee outputFilename`
 
