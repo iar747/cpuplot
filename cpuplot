@@ -27,11 +27,11 @@ echo
 #################################################
 # Usage function
 function usage () {
-    cat <<EOF
+cat <<EOF
 Usage: $0 -i [seconds] -w [small medium large xlarge]
 where:
-    -i interval time in seconds between CPU readings.
-    -w width of the output, "small", "medium", "large", "xlarge"
+-i interval time in seconds between CPU readings.
+-w width of the output, "small", "medium", "large", "xlarge"
 
 As described in the man page for the "ps" command:
 "The CPU utilization of the process is a decaying average over up to a
@@ -47,46 +47,46 @@ Load Average by the number of Cores in the system.
 
 EOF
 echo
-    exit 0
+exit 0
 }
 
 #################################################
 # Handling Options
 while getopts ":w:i:" opt; do
-    case $opt in
-        w)
-            if [ "$OPTARG" == "small" ] ; then
-                WIDTH="$OPTARG"
-            elif [ "$OPTARG" == "medium" ] ; then
-                WIDTH="$OPTARG"
-            elif [ "$OPTARG" == "large" ] ; then
-                WIDTH="$OPTARG"
-            elif [ "$OPTARG" == "xlarge" ] ; then
-                WIDTH="$OPTARG"
-            else
-                echo "Invalid argument for width option '-w'.  Usage example:  cpuplot -w medium" >&2
-                usage
-            fi
-            ;;
-        i)
-            re='^[0-9]+([.][0-9]+)?$'
-            if ! [[ $OPTARG =~ $re ]] ; then
-                #Value is not a number or is empty.
-                echo "Invalid argument for interval option '-i'. Usage example: cpuplot -i 5" >&2
-                usage
-            else
-                SECS=$OPTARG
-            fi
-            ;;
-        \?)
-            echo "Invalid option: -$OPTARG" >&2
-            usage
-            ;;
-        :)
-            echo "Option -$OPTARG requires an argument." >&2
-            usage
-            ;;
-    esac
+	case $opt in
+	w)
+		if [ "$OPTARG" == "small" ] ; then
+			WIDTH="$OPTARG"
+		elif [ "$OPTARG" == "medium" ] ; then
+			WIDTH="$OPTARG"
+		elif [ "$OPTARG" == "large" ] ; then
+			WIDTH="$OPTARG"
+		elif [ "$OPTARG" == "xlarge" ] ; then
+			WIDTH="$OPTARG"
+		else
+			echo "Invalid argument for width option '-w'.  Usage example:  cpuplot -w medium" >&2
+			usage
+		fi
+	;;
+	i)
+		re='^[0-9]+([.][0-9]+)?$'
+		if ! [[ $OPTARG =~ $re ]] ; then
+			#Value is not a number or is empty.
+			echo "Invalid argument for interval option '-i'. Usage example: cpuplot -i 5" >&2
+			usage
+		else
+			SECS=$OPTARG
+		fi
+	;;
+	\?)
+		echo "Invalid option: -$OPTARG" >&2
+		usage
+	;;
+	:)
+		echo "Option -$OPTARG requires an argument." >&2
+		usage
+	;;
+	esac
 done
 
 #################################################
@@ -110,114 +110,128 @@ echo
 HEADER=""
 
 if [ "$WIDTH" == "small" ] ; then
-    HEADER="0....1....2....3....4....5....6....7....8....9....1"
+	HEADER="0....1....2....3....4....5....6....7....8....9....1"
 elif [ "$WIDTH" == "medium" ] ; then
-    HEADER="TIME     COMMAND      %CPUt 0....1....2....3....4....5....6....7....8....9....1"
+	HEADER="TIME     COMMAND      %CPUt 0....1....2....3....4....5....6....7....8....9....1"
 elif [ "$WIDTH" == "large" ] ; then
-    HEADER="TIME     PID   PROCESS      %MEMp %CPUp| %MEMt %LA1m %CPUt 0....1....2....3....4....5....6....7....8....9....1"
+	HEADER="TIME     PID   PROCESS      %MEMp %CPUp| %MEMt %LA1m %CPUt 0....1....2....3....4....5....6....7....8....9....1"
 elif [ "$WIDTH" == "xlarge" ] ; then
-    HEADER="TIME     PID   PROCESS      %MEMp %CPUp| %MEMt %CPUt 0....1....2....3....4....5....6....7....8....9....1 |%LA1m 0....1....2....3....4....5....6....|....8....9....1"
+	HEADER="TIME     PID   PROCESS      %MEMp %CPUp| %MEMt %CPUt 0....1....2....3....4....5....6....7....8....9....1 |%LA1m 0....1....2....3....4....5....6....|....8....9....1"
 fi
+
+SLEEP_SPAN=$((SECS + 1))
 
 #################################################
 #Do until "Ctrl-c".
 while true
 do
-    DATETIME=$(date +"%Y-%m-%d %T")
+	DATETIME=$(date +"%Y-%m-%d %T")
 
-    LOADS=$(uptime)
-    LOADS=$(echo "${LOADS#*": "}")
+	LOADS=$(uptime)
+	LOADS=$(echo "${LOADS#*": "}")
 
-    echo "$DATETIME   Load Avg: $LOADS"
+	echo "$DATETIME   Load Avg: $LOADS"
+	echo "$HEADER"
 
-    echo "$HEADER"
+	#################################################
+	#Do 22 times, so it fits in the default 24 lines of a terminal screen.
+	for (( i=1; i<=22; i++))
+	do
 
-    #################################################
-    #Do 22 times, so it fits in the default 24 lines of a terminal screen.
-    for (( i=1; i<=22; i++))
-    do
+		START_TIME=$SECONDS
 
-        #Parse the command with most cpu usage.
-        OUTSTR=$(ps -Arco  %cpu= -o pmem= -o pid= -o comm=)
+		#Parse the command with most cpu usage.
+		OUTSTR=$(ps -Arco  %cpu= -o pmem= -o pid= -o comm=)
 
-        ###############################
-        # Calculate 1 minute Load Average %
-        if [ "$WIDTH" == "large" ] || [ "$WIDTH" == "xlarge" ] ; then
-                LOAD1m=$(uptime)
-                LOAD1m=$(echo "${LOAD1m#*": "}" | cut -d' ' -f1)
-                LOADHALFp=$(awk -v a=$LOAD1m -v b=$CORES 'BEGIN { print int((a / b) * 50) }')
-                LOAD1mROUNDEDp=$(($LOADHALFp * 2))
-                if [ $LOADHALFp -gt 50 ] ; then
-                    LOADHALFp=50
-                fi
-        fi
+		###############################
+		# Calculate 1 minute Load Average %
+		if [ "$WIDTH" == "large" ] || [ "$WIDTH" == "xlarge" ] ; then
+			LOAD1m=$(uptime)
+			LOAD1m=$(echo "${LOAD1m#*": "}" | cut -d' ' -f1)
+			LOADHALFp=$(awk -v a=$LOAD1m -v b=$CORES 'BEGIN { print int((a / b) * 50) }')
+			LOAD1mROUNDEDp=$(($LOADHALFp * 2))
+			if [ $LOADHALFp -gt 50 ] ; then
+				LOADHALFp=50
+			fi
+		fi
 
-        ###############################
-        # Extract other values
-        PSFIRSTLINE=($(printf "$OUTSTR" | head -n 1))
+		###############################
+		# Extract other values
+		PSFIRSTLINE=($(printf "$OUTSTR" | head -n 1))
 
-        CMDNAME=$(echo "$OUTSTR" | head -n 1 | cut -c 18-29)
+		CMDNAME=$(echo "$OUTSTR" | head -n 1 | cut -c 18-29)
 
-        CMDCPU=$(echo "${PSFIRSTLINE[0]}")
-        CMDMEM=$(echo "${PSFIRSTLINE[1]}")
-        PID=$(echo "${PSFIRSTLINE[2]}")
+		CMDCPU=$(echo "${PSFIRSTLINE[0]}")
+		CMDMEM=$(echo "${PSFIRSTLINE[1]}")
+		PID=$(echo "${PSFIRSTLINE[2]}")
 
-        TOTALS=$(printf "$OUTSTR" | awk '{cpu += $1; mem += $2} END {print cpu " " mem}')
+		TOTALS=$(printf "$OUTSTR" | awk '{cpu += $1; mem += $2} END {print cpu " " mem}')
 
-        TIME=$(date +%T)
+		TIME=$(date +%T)
 
-        MEMTOTAL=$(printf "%s" "$TOTALS" | cut -d' ' -f2)
+		MEMTOTAL=$(printf "%s" "$TOTALS" | cut -d' ' -f2)
 
-        CPUTOTAL=$(printf "%s" "$TOTALS" | cut -d' ' -f1)
-        CPUROUNDED=$(printf "%.0f" $CPUTOTAL)
-        #Truncate if greater than 100%
-        if [ $CPUROUNDED -gt 100 ] ; then
-            CPUROUNDED=100
-        fi
-        CPUDIV=$(expr $CPUROUNDED / 2)
+		CPUTOTAL=$(printf "%s" "$TOTALS" | cut -d' ' -f1)
+		CPUROUNDED=$(printf "%.0f" $CPUTOTAL)
+		#Truncate if greater than 100%
+		if [ $CPUROUNDED -gt 100 ] ; then
+			CPUROUNDED=100
+		fi
+		CPUDIV=$(expr $CPUROUNDED / 2)
 
-        ###############################
-        # Print values based on -w
-        if [ "$WIDTH" == "medium" ] ; then
-            printf "%s %-12s %-5s "  "$TIME" "$CMDNAME" "$CPUTOTAL"
-        elif [ "$WIDTH" == "large" ] ; then
-            printf "%s %-5s %-12s %-5s %-5s%s %-5s %-5s %-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$CMDCPU" "|" "$MEMTOTAL" "$LOAD1mROUNDEDp" "$CPUTOTAL"
-        elif [ "$WIDTH" == "xlarge" ] ; then
-            printf "%s %-5s %-12s %-5s %-5s%s %-5s %-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$CMDCPU" "|" "$MEMTOTAL" "$CPUTOTAL"
-        fi
+		###############################
+		# Print values based on -w
+		if [ "$WIDTH" == "medium" ] ; then
+			printf "%s %-12s %-5s "  "$TIME" "$CMDNAME" "$CPUTOTAL"
+		elif [ "$WIDTH" == "large" ] ; then
+			printf "%s %-5s %-12s %-5s %-5s%s %-5s %-5s %-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$CMDCPU" "|" "$MEMTOTAL" "$LOAD1mROUNDEDp" "$CPUTOTAL"
+		elif [ "$WIDTH" == "xlarge" ] ; then
+			printf "%s %-5s %-12s %-5s %-5s%s %-5s %-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$CMDCPU" "|" "$MEMTOTAL" "$CPUTOTAL"
+		fi
 
-        ##################################
-        #Print Total CPU% bar
-        BARCHAR="|"
-        BARSTRING=""
-        for (( count=0; count<=$CPUDIV; count++))
-        do
-            BARSTRING+=$BARCHAR
-        done
-        printf "%-52s" "$BARSTRING"
+		##################################
+		#Print Total CPU% bar
+		BARCHAR="|"
+		BARSTRING=""
+		for (( count=0; count<=$CPUDIV; count++))
+		do
+			BARSTRING+=$BARCHAR
+		done
+		printf "%-52s" "$BARSTRING"
 
-        ##################################
-        #Print 1 minute Load Average Percentage bar
-        if [ "$WIDTH" == "xlarge" ] ; then
-            printf "%s%-5s " "|" "$LOAD1mROUNDEDp"
-            BARCHAR="|"
-            BARSTRING=""
-            for (( count=0; count<=$LOADHALFp; count++))
-            do
-                if [ $count -eq 35 ] ; then
-                    BARCHAR="+"
-                fi
-                BARSTRING+=$BARCHAR
-            done
-            printf "%-51s" "$BARSTRING"
-        fi
+		##################################
+		#Print 1 minute Load Average Percentage bar
+		if [ "$WIDTH" == "xlarge" ] ; then
+			printf "%s%-5s " "|" "$LOAD1mROUNDEDp"
+			BARCHAR="|"
+			BARSTRING=""
+			
+			for (( count=0; count<=$LOADHALFp; count++)) ; do
+				if [ $count -eq 35 ] ; then
+				BARCHAR="+"
+				fi
+				BARSTRING+=$BARCHAR
+			done
+			
+			printf "%-51s" "$BARSTRING"
+		fi
 
-        echo
+		echo
 
-        sleep $SECS
+		sleep $SECS
 
-    #22 lines loop done
-    done
+		#Find if the system has been asleep.
+		ELAPSED_TIME=$(($SECONDS - $START_TIME))
+		if [ "$ELAPSED_TIME" -gt "$SLEEP_SPAN" ] ; then
+			echo
+			echo
+			echo "ASLEEP"
+			i=23   #So it exits to the main loop and prints the scale bars.
+			break
+		fi
+
+	#22 lines loop done
+	done
 
 #infinite loop done
 done
