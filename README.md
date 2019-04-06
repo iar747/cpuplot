@@ -47,6 +47,7 @@ Load Average by the number of Cores in the system.
 
 ## Writing output to a file:
 To have both stderr and output displayed on the console and in a file use this:
+
 `cpuplot 2>&1 | tee outputFilename`
 
 ## Other screenshots:
