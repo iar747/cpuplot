@@ -8,8 +8,8 @@ process with the highest CPU utilization.
 
 If the system has been in sleep mode, it displays the "ASLEEP" text.
 
-Default sleep interval between readings is 5secs. But a different one can be
-passed as an argument in the command line.
+Default wait interval between system readings is 5secs. But a different one can be
+passed in the command line with the "-i" argument.
 
 Build for MacOS bash.  A linux version coming soon.
 
