@@ -18,7 +18,7 @@ Default wait interval between system readings is 5secs. But a different one can 
 
 
 
-# Usage: 
+## Usage: 
 **cpuplot -i [seconds] -w [small medium large xlarge]**
 
 Where:
@@ -30,7 +30,7 @@ Where:
 Example: **cpuplot -i 9 -w xlarge**    This command will set the time intervals to 9 seconds and the view will show the plot bars for total % of CPU usage and total % of load average.
 
 
-# Calculations:
+## Calculations:
 As described in the man page for the "ps" command:
 "The CPU utilization of the process is a decaying average over up to a
 minute of previous (real) time.  Because the time base over which this
