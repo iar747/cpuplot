@@ -2,6 +2,8 @@
 
 # Command Line profiler of CPU usage.
 
+![](cpuplot%20xlarge%20screenshot.png)
+
 Displays bar graphs to the terminal depicting the Total CPU Usage Percentage
 and the Total 1 Minute Load Average Percentage.  It also shows name of the
 process with the highest CPU utilization.
@@ -37,5 +39,3 @@ When this happens, the bar plot will be truncated to 100%.
 
 The 1 minute Load Average Percentage, is calculated dividing the 1 minute
 Load Average by the number of Cores in the system.
-
-![](cpuplot%20xlarge%20screenshot.png)
