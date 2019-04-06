@@ -38,3 +38,4 @@ When this happens, the bar plot will be truncated to 100%.
 The 1 minute Load Average Percentage, is calculated dividing the 1 minute
 Load Average by the number of Cores in the system.
 
+![](cpuplot%20xlarge%20screenshot.png)
