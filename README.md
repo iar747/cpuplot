@@ -1,6 +1,6 @@
 # cpuplot
 
-# Command Line profiler of CPU usage.
+## Command Line profiler of CPU and System Load.
 
 ![](cpuplot%20xlarge%20screenshot.png)
 
