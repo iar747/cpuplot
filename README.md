@@ -46,7 +46,7 @@ Load Average by the number of Cores in the system.
 ## Writing output to a file:
 The following command will have the output of cpuplot displayed to the console and also written to a file: 
 
-`cpuplot 2>&1 | tee` **_outputFilename_**
+`cpuplot 2>&1 | tee outputFilename`
 
 ## Other screenshots:
 Using `cpuplot` with no arguments, will use the default arguments of `-i 5` for 5 seconds intervals, and `-w medium` to show only the plot of cpu usage and fit in a standard 80 column console.
