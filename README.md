@@ -12,8 +12,6 @@ Default wait interval between system readings is 5secs. But a different one can 
 
 The script detects when the system is in SLEEP mode and shows the "ASLEEP" text.
 
-**Build for MacOS bash.  A linux version coming soon.**
-
 **Developer: Ismael Antadillas**
 
 
