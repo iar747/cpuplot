@@ -25,6 +25,17 @@ stty -echo
 echo
 
 #################################################
+# Find OS type
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     OS=Linux;;
+    Darwin*)    OS=Mac;;
+    CYGWIN*)    OS=Cygwin;;
+    MINGW*)     OS=MinGw;;
+    *)          OS="UNKNOWN:${unameOut}"
+esac
+
+#################################################
 # Usage function
 function usage () {
 cat <<EOF
@@ -91,18 +102,24 @@ done
 
 #################################################
 #Create and print header.
-HARDWARE=$(system_profiler SPHardwareDataType)
 
-CORES=$( printf "%s" "$HARDWARE" | grep Cores: | cut -d' ' -f11)
-RAM=$( printf "%s" "$HARDWARE" | grep Memory: )
-RAM=$(echo "${RAM#*'Memory: '}")
+if [ "$OS" == "Mac" ] ; then
+	HARDWARE=$(system_profiler SPHardwareDataType)
+	CORES=$( printf "%s" "$HARDWARE" | grep Cores: | cut -d' ' -f11)
+	RAM=$( printf "%s" "$HARDWARE" | grep Memory: )
+	RAM=$(echo "${RAM#*'Memory: '}")
+else
+	CORES=$(nproc --all)
+	RAM=$(free -m | grep Mem: | awk '{print $2;}')
+	RAM="$RAM MB"
+fi
 
 HOST=$(hostname)
 USER=$(whoami)
 ZONE=$(date +"%Z")
 
 echo "Hostname: $HOST | User: $USER"
-echo "RAM: $RAM | Cores: $CORES | Timezone: $ZONE"
+echo "OS: $OS | RAM: $RAM | Cores: $CORES | Timezone: $ZONE"
 echo
 
 #################################################
@@ -141,7 +158,13 @@ do
 		START_TIME=$SECONDS
 
 		#Parse the command with most cpu usage.
-		OUTSTR=$(ps -Arco  %cpu= -o pmem= -o pid= -o comm=)
+		if [ "$OS" == "Mac" ] ; then
+			#OUTSTR=$(ps -Arco  %cpu= -o pmem= -o pid= -o comm=)
+			OUTSTR=$(ps -erc -o pcpu=,pmem=,pid=,comm=)
+			OUTSTR="${OUTSTR:1}"  #del first char. Macos bash has one extra space in front.
+		else
+			OUTSTR=$(ps -e -o pcpu=,pmem=,pid=,comm= --sort -pcpu)
+		fi
 
 		###############################
 		# Calculate 1 minute Load Average %
@@ -159,8 +182,7 @@ do
 		# Extract other values
 		PSFIRSTLINE=($(printf "$OUTSTR" | head -n 1))
 
-		CMDNAME=$(echo "$OUTSTR" | head -n 1 | cut -c 18-29)
-
+		CMDNAME=$(echo "$OUTSTR" | head -n 1 | cut -c 17-28)
 		CMDCPU=$(echo "${PSFIRSTLINE[0]}")
 		CMDMEM=$(echo "${PSFIRSTLINE[1]}")
 		PID=$(echo "${PSFIRSTLINE[2]}")
