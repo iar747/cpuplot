@@ -10,6 +10,7 @@
 # Default sleep interval between readings is 5secs. But a different one can be
 # passed as an argument in the command line.
 #
+#
 # Developer: Ismael Antadillas
 
 
@@ -23,14 +24,14 @@ stty -echo
 echo
 
 #################################################
-# Find OS type
+# Find System type
 unameOut="$(uname -s)"
 case "${unameOut}" in
-    Linux*)     OS=Linux;;
-    Darwin*)    OS=Mac;;
-    CYGWIN*)    OS=Cygwin;;
-    MINGW*)     OS=MinGw;;
-    *)          OS="UNKNOWN:${unameOut}"
+    Linux*)     ENV=Linux;;
+    Darwin*)    ENV=Mac;;
+    CYGWIN*)    ENV=Cygwin;;
+    MINGW*)     ENV=MinGw;;
+    *)          ENV="UNKNOWN:${unameOut}"
 esac
 
 #################################################
@@ -101,7 +102,7 @@ done
 #################################################
 #Create and print header.
 
-if [ "$OS" == "Mac" ] ; then
+if [ "$ENV" == "Mac" ] ; then
 	HARDWARE=$(system_profiler SPHardwareDataType)
 	CORES=$( printf "%s" "$HARDWARE" | grep Cores: | cut -d' ' -f11)
 	RAM=$( printf "%s" "$HARDWARE" | grep Memory: )
@@ -117,7 +118,7 @@ USER=$(whoami)
 ZONE=$(date +"%Z")
 
 echo "Hostname: $HOST | User: $USER"
-echo "OS: $OS | RAM: $RAM | Cores: $CORES | Timezone: $ZONE"
+echo "ENV: $ENV | RAM: $RAM | Cores: $CORES | Timezone: $ZONE"
 echo
 
 #################################################
@@ -156,7 +157,7 @@ do
 		START_TIME=$SECONDS
 
 		#Parse the command with most cpu usage.
-		if [ "$OS" == "Mac" ] ; then
+		if [ "$ENV" == "Mac" ] ; then
 			#OUTSTR=$(ps -Arco  %cpu= -o pmem= -o pid= -o comm=)
 			OUTSTR=$(ps -erc -o pcpu=,pmem=,pid=,comm=)
 			OUTSTR="${OUTSTR:1}"  #del first char. Macos bash has one extra space in front.
