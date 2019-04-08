@@ -10,8 +10,6 @@
 # Default sleep interval between readings is 5secs. But a different one can be
 # passed as an argument in the command line.
 #
-# Build for MacOS bash.  A linux version coming soon.
-#
 # Developer: Ismael Antadillas
 
 
