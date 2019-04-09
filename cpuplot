@@ -118,7 +118,7 @@ ZONE=$(date +"%Z")
 SLEEP_SPAN=$((SECS + 1))  #SLEEP_SPAN is the value to check if the system was in "sleep mode".
 
 echo "Hostname: $HOST"
-echo "User: $USER | Interval: $SECS"
+echo "User: $USER | Interval: $SECS secs"
 echo "ENV: $ENV | RAM: $RAM | Cores: $CORES | Timezone: $ZONE"
 echo
 
