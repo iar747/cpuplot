@@ -31,9 +31,11 @@ This command will set the time intervals to 9 seconds and shows the plot bars fo
 
 ## Acronyms:
 **%MEMp** Percentage of RAM memory used by the process.
+
 **%MEMt** Total percentage of RAM memory used.
 
 **%CPUp** Percentage of CPU used by the process.
+
 **%CPUt** Total percentage of CPU being used.
 
 **%LA1m** Percentage of one minute Load Average.
