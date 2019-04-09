@@ -18,9 +18,6 @@
 SECS=5
 WIDTH="medium"
 
-# Disable user typing into the terminal.  It honors "Ctrl-D".
-stty -echo
-
 echo
 
 #################################################
@@ -117,7 +114,10 @@ HOST=$(hostname)
 USER=$(whoami)
 ZONE=$(date +"%Z")
 
-echo "Hostname: $HOST | User: $USER"
+SLEEP_SPAN=$((SECS + 1))  #SLEEP_SPAN is the value to check if the system was in "sleep mode".
+
+echo "Hostname: $HOST"
+echo "User: $USER | Interval: $SECS"
 echo "ENV: $ENV | RAM: $RAM | Cores: $CORES | Timezone: $ZONE"
 echo
 
@@ -130,15 +130,17 @@ if [ "$WIDTH" == "small" ] ; then
 elif [ "$WIDTH" == "medium" ] ; then
 	HEADER="TIME     COMMAND      %CPUt 0....1....2....3....4....5....6....7....8....9....1"
 elif [ "$WIDTH" == "large" ] ; then
-	HEADER="TIME     PID   PROCESS      %MEMp %CPUp| %MEMt %LA1m %CPUt 0....1....2....3....4....5....6....7....8....9....1"
+	HEADER="TIME     PID   PROCESS      %MEMp %MEMt %LA1m %CPUp |%CPUt 0....1....2....3....4....5....6....7....8....9....1"
 elif [ "$WIDTH" == "xlarge" ] ; then
-	HEADER="TIME     PID   PROCESS      %MEMp %CPUp| %MEMt %CPUt 0....1....2....3....4....5....6....7....8....9....1 |%LA1m 0....1....2....3....4....5....6....|....8....9....1"
+	HEADER="TIME     PID   PROCESS      %MEMp %MEMt %CPUp |%CPUt 0....1....2....3....4....5....6....7....8....9....1 |%LA1m 0....1....2....3....4....5....6....|....8....9....1"
 fi
-
-SLEEP_SPAN=$((SECS + 1))
 
 #################################################
 #Do until "Ctrl-c".
+
+# Disable user typing into the terminal.  It honors "Ctrl-D".
+stty -echo
+
 while true
 do
 	DATETIME=$(date +"%Y-%m-%d %T")
@@ -205,9 +207,9 @@ do
 		if [ "$WIDTH" == "medium" ] ; then
 			printf "%s %-12s %-5s "  "$TIME" "$CMDNAME" "$CPUTOTAL"
 		elif [ "$WIDTH" == "large" ] ; then
-			printf "%s %-5s %-12s %-5s %-5s%s %-5s %-5s %-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$CMDCPU" "|" "$MEMTOTAL" "$LOAD1mROUNDEDp" "$CPUTOTAL"
+			printf "%s %-5s %-12s %-5s %-5s %-5s %-5s %s%-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$MEMTOTAL" "$LOAD1mROUNDEDp" "$CMDCPU" "|" "$CPUTOTAL"
 		elif [ "$WIDTH" == "xlarge" ] ; then
-			printf "%s %-5s %-12s %-5s %-5s%s %-5s %-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$CMDCPU" "|" "$MEMTOTAL" "$CPUTOTAL"
+			printf "%s %-5s %-12s %-5s %-5s %-5s %s%-5s "  "$TIME" "$PID" "$CMDNAME" "$CMDMEM" "$MEMTOTAL" "$CMDCPU" "|" "$CPUTOTAL"
 		fi
 
 		##################################
@@ -252,7 +254,9 @@ do
 		fi
 
 	#22 lines loop done
-	done
+	done  # for loop
 
 #infinite loop done
-done
+done  #while true
+
+stty echo  #enable keyboard input
