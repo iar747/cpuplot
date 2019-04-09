@@ -2,7 +2,7 @@
 
 ## Command Line Profiler of CPU Usage and Load Average.
 
-![](cpuplot%20xlarge%20screenshot.png)
+![](cpuplot%20xlarge%20screenshot1.png)
 
 
 ## Synopsis:
