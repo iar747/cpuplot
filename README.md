@@ -6,7 +6,9 @@
 
 
 ## Synopsis:
-Displays bar graphs to the terminal depicting the Total CPU Usage Percentage and the Total 1 Minute Load Average Percentage.  It shows the name of the process with the highest CPU utilization, and allows to view the history of CPU usage.
+BASH script that shows the history of CPU usage, and what procces uses the most CPU at a given time. 
+
+Bar graphs are shown depicting the percentage of Total CPU Usage, and the percentage of Total 1 Minute Load Average.
 
 Default wait interval between system readings is 5secs. But a different one can be passed in the command line with the **-i** argument.  Default output is set for the standard console width of 80 columns, and will show only the bar chart for the CPU usage.  To change this, use the **-w** argument explained below in the "usage" section.
 
