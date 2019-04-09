@@ -29,6 +29,14 @@ Example: `cpuplot -i 9   -w xlarge`
 
 This command will set the time intervals to 9 seconds and shows the plot bars for **total % of CPU usage** and **total % of load average**.
 
+## Acronyms:
+**%MEMp** Percentage of RAM memory used by the process.
+**%MEMt** Total percentage of RAM memory used.
+
+**%CPUp** Percentage of CPU used by the process.
+**%CPUt** Total percentage of CPU being used.
+
+**%LA1m** Percentage of one minute Load Average.
 
 ## Calculations:
 As described in the man page for the "ps" command:
