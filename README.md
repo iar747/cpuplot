@@ -62,6 +62,6 @@ The following command will have the output of cpuplot displayed to the console a
 `cpuplot 2>&1 | tee outputFilename`
 
 ## Other screenshots:
-Using `cpuplot` with no arguments, will use the default arguments of `-i 5` for 5 seconds intervals, and `-w medium` to show only the plot of cpu usage and fit in a standard 80 column console.
+Using `cpuplot` with no arguments, will use the default arguments of `-i 5` for 5 seconds intervals, and `-w medium` to show only the plot of cpu usage and fit in a standard 80 columns console.
 
 ![](/screenshots/cpuplot_default_screenshot.png)
