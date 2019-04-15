@@ -2,8 +2,7 @@
 
 ## Command Line Profiler of CPU Usage and Load Average.
 
-![](cpuplot%20xlarge%20screenshot2.png)
-
+![](/screenshots/cpuplot_xlarge_screenshot.png)
 
 ## Synopsis:
 BASH script that shows the history of CPU usage, and what procces uses the most CPU at a given time. 
